@@ -201,28 +201,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Setup Events
 function setupEventListeners() {
-  const navBtnHome = document.getElementById('nav-btn-home');
-  const navBtnApp = document.getElementById('nav-btn-app');
-  const btnHeroContinue = document.getElementById('btn-hero-continue');
-  const heroSection = document.getElementById('hero-section');
-  const webAppSection = document.getElementById('web-app-section');
-
-  const showHome = () => {
-    if (navBtnHome) navBtnHome.classList.add('active');
-    if (navBtnApp) navBtnApp.classList.remove('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const showWebApp = () => {
-    if (navBtnHome) navBtnHome.classList.remove('active');
-    if (navBtnApp) navBtnApp.classList.add('active');
-    if (webAppSection) webAppSection.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  if (navBtnHome) navBtnHome.addEventListener('click', showHome);
-  if (navBtnApp) navBtnApp.addEventListener('click', showWebApp);
-  if (btnHeroContinue) btnHeroContinue.addEventListener('click', showWebApp);
-
   // Bulk Downloader Controls
   filterStatus.addEventListener('change', () => {
     applyFilters();
