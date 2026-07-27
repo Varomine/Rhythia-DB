@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A client-side downloader and sync manager for Rhythia maps. Download Ranked and Unranked maps in batches or sync your local library." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Rhythia DB</title>
+    <!-- Google Fonts: Outfit and Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Core stylesheet -->
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fa-solid fa-compact-disc disc-icon"></i>
+            <h1>Rhythia<span>DB</span></h1>
+          </div>
+          <p class="tagline">Manage, download, and synchronize your Rhythia rhythm game music library 100% in your browser.</p>
+        </div>
+      </header>
+
+      <main class="app-container">
+        <!-- Database Loader Status -->
+        <section id="db-status-section" class="card db-status-card">
+          <div class="db-status-content">
+            <div class="loader-circle" id="db-loader"></div>
+            <div class="db-status-text">
+              <h3 id="db-status-title">Syncing with Rhythia Database...</h3>
+              <p id="db-status-desc">Fetching latest map lists from production.rhythia.com</p>
+            </div>
+          </div>
+          <div class="progress-bar-container mini">
+            <div class="progress-bar-fill" id="db-progress" style="width: 0%"></div>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-grid">
+          <div class="card stat-card" id="stat-total">
+            <div class="stat-icon pink"><i class="fa-solid fa-music"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">Total Maps</span>
+              <span class="stat-value" id="val-total">-</span>
+            </div>
+          </div>
+          <div class="card stat-card" id="stat-ranked">
+            <div class="stat-icon cyan"><i class="fa-solid fa-trophy"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">Ranked Maps</span>
+              <span class="stat-value" id="val-ranked">-</span>
+            </div>
+          </div>
+          <div class="card stat-card" id="stat-unranked">
+            <div class="stat-icon violet"><i class="fa-solid fa-globe"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">Unranked Maps</span>
+              <span class="stat-value" id="val-unranked">-</span>
+            </div>
+          </div>
+          <div class="card stat-card" id="stat-qualified">
+            <div class="stat-icon yellow"><i class="fa-solid fa-star"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">Qualified</span>
+              <span class="stat-value" id="val-qualified">-</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="main-grid">
+          <!-- Left Column: Bulk Downloader -->
+          <div class="column-left">
+            <section class="card downloader-card">
+              <div class="card-header">
+                <h2><i class="fa-solid fa-cloud-arrow-down icon-cyan"></i> Bulk Downloader</h2>
+                <span class="badge badge-info">Client-side Zip</span>
+              </div>
+              <div class="card-body">
+                <p class="card-description">
+                  Due to browser memory limits, compiling all 9,000+ maps (~45GB) into a single ZIP file is not supported. Please use the batch downloader below.
+                </p>
+
+                <!-- Filters & Controls -->
+                <div class="form-group">
+                  <label for="filter-status">Map Types</label>
+                  <select id="filter-status" class="form-control">
+                    <option value="RANKED">Ranked Only</option>
+                    <option value="UNRANKED">Unranked Only</option>
+                    <option value="QUALIFIED">Qualified Only</option>
+                    <option value="ALL">All Maps (Ranked + Unranked + Qualified)</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group half">
+                    <label for="batch-size">Maps Per ZIP Batch</label>
+                    <select id="batch-size" class="form-control">
+                      <option value="20" selected>20 Maps (~100 MB - Recommended)</option>
+                      <option value="50">50 Maps (~250 MB)</option>
+                      <option value="100">100 Maps (~500 MB)</option>
+                      <option value="200">200 Maps (~1.0 GB)</option>
+                    </select>
+                  </div>
+                  <div class="form-group half">
+                    <label for="batch-select">Select Batch</label>
+                    <select id="batch-select" class="form-control">
+                      <!-- Dynamically filled -->
+                      <option value="0">Loading...</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="batch-info-panel" id="batch-info-panel" style="display: none;">
+                  <span id="batch-range-text">Maps 1 to 100 of 846</span>
+                  <span class="bullet">•</span>
+                  <span id="batch-size-estimate">Est. Size: ~500 MB</span>
+                </div>
+
+                <!-- Downloader Actions -->
+                <div class="action-buttons">
+                  <button id="btn-download-batch" class="btn btn-primary" disabled>
+                    <i class="fa-solid fa-circle-down"></i> Download Selected Batch
+                  </button>
+                  <button id="btn-download-all-maps" class="btn btn-secondary" disabled>
+                    <i class="fa-solid fa-download"></i> Download ALL Maps
+                  </button>
+                  <button id="btn-cancel-download" class="btn btn-danger" style="display: none;">
+                    <i class="fa-solid fa-circle-xmark"></i> Cancel
+                  </button>
+                </div>
+
+                <!-- Download Progress Tracking -->
+                <div class="download-progress-container" id="download-progress-container" style="display: none;">
+                  <div class="progress-details">
+                    <span class="progress-status" id="download-progress-status">Preparing downloads...</span>
+                    <span class="progress-percent" id="download-progress-percent">0%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill progress-glow" id="download-progress-fill" style="width: 0%"></div>
+                  </div>
+                  <div class="download-stats">
+                    <span id="download-stat-count">0 / 0 maps downloaded</span>
+                    <span id="download-stat-speed">0.0 MB/s</span>
+                  </div>
+                  <!-- Detailed console/log snippet -->
+                  <div class="log-console-header" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; margin-bottom: 0.25rem;">
+                    <span class="log-title" style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-terminal"></i> Activity Log (Hidden to prevent lag)</span>
+                    <button type="button" id="btn-toggle-log" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+                      <i class="fa-solid fa-eye"></i> Show Logs
+                    </button>
+                  </div>
+                  <div class="log-console" id="download-log" style="display: none;">
+                    <div class="log-line text-mute">Console initialized... Ready to download.</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Right Column: Sync & Upload Checker -->
+          <div class="column-right">
+            <section class="card upload-card">
+              <div class="card-header">
+                <h2><i class="fa-solid fa-folder-open icon-pink"></i> Library Checker (Sync)</h2>
+                <span class="badge badge-pink">100% Private</span>
+              </div>
+              <div class="card-body">
+                <p class="card-description">
+                  Upload your existing map files, ZIPs, or folders. We will analyze them to determine which maps you are still missing from the database.
+                </p>
+
+                <!-- Drag & Drop Zone -->
+                <div class="upload-dropzone disabled" id="dropzone">
+                  <input type="file" id="file-upload" accept=".zip,.sspm,.rhm,.ssmp" multiple class="file-input" disabled />
+                  <input type="file" id="folder-upload" webkitdirectory directory multiple class="file-input" style="display: none;" disabled />
+                  <i class="fa-solid fa-folder-open upload-icon"></i>
+                  <h3>Drag & Drop your maps, ZIPs, or folders here</h3>
+                  <p>or click to browse multiple map files / folders from your device</p>
+                  <div class="upload-mode-buttons" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; z-index: 10; position: relative;">
+                    <button type="button" id="btn-select-files" class="btn btn-secondary btn-sm" disabled><i class="fa-solid fa-file"></i> Select Files</button>
+                    <button type="button" id="btn-select-folder" class="btn btn-secondary btn-sm" disabled><i class="fa-solid fa-folder"></i> Select Folder</button>
+                  </div>
+                  <span class="upload-limit-warn" id="upload-status-text">Please wait for the Rhythia database to sync...</span>
+                </div>
+
+                <!-- ZIP Processing Status -->
+                <div id="zip-process-status" class="zip-process-card" style="display: none; flex-direction: column; gap: 0.75rem; align-items: stretch;">
+                  <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="spinner-small" id="zip-spinner"></div>
+                    <div class="zip-process-text">
+                      <h4 id="zip-process-title">Reading Directory...</h4>
+                      <p id="zip-process-desc">Initializing parser</p>
+                    </div>
+                  </div>
+                  <div class="progress-bar-container mini">
+                    <div class="progress-bar-fill" id="zip-progress" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="sync-results-panel" id="sync-results" style="display: none;">
+                  <div class="sync-percentage-card">
+                    <div class="percentage-circle">
+                      <svg viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40"></circle>
+                        <circle cx="50" cy="50" r="40" id="percent-ring" style="stroke-dasharray: 251; stroke-dashoffset: 251;"></circle>
+                      </svg>
+                      <div class="percent-number" id="sync-percent-text">0%</div>
+                    </div>
+                    <div class="sync-summary-stats">
+                      <h3>Sync Results</h3>
+                      <p><strong id="sync-owned-count">0</strong> maps owned</p>
+                      <p><strong id="sync-missing-count">0</strong> maps missing</p>
+                    </div>
+                  </div>
+
+                  <!-- Missing Maps list -->
+                  <div class="missing-maps-section card" id="missing-maps-section" style="display: none;">
+                    <div class="missing-header">
+                      <h3><i class="fa-solid fa-list-check icon-pink"></i> Missing Maps (<span id="missing-list-count">0</span>)</h3>
+                      <button id="btn-download-missing-all" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Download All Missing
+                      </button>
+                    </div>
+
+                    <div class="missing-list-container">
+                      <table class="missing-table">
+                        <thead>
+                          <tr>
+                            <th>Map Details</th>
+                            <th>Difficulty</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="missing-table-body">
+                          <!-- Filled dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>Built with <i class="fa-solid fa-heart icon-pink animate-pulse"></i> for Rhythia players.</p>
+        <p class="text-mute font-mono text-xs">All map assets and metadata are fetched directly from production.rhythia.com & static.rhythia.com. We do not host or store any files.</p>
+      </footer>
+    </div>
+
+    <!-- Custom Modal Dialog -->
+    <div id="custom-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="modal-title">Notification</h3>
+          <button id="modal-close-btn" class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="modal-message"></p>
+        </div>
+        <div class="modal-footer" id="modal-footer">
+          <button id="modal-cancel-btn" class="btn btn-secondary btn-sm">Cancel</button>
+          <button id="modal-confirm-btn" class="btn btn-primary btn-sm">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
