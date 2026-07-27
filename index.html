@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A client-side downloader and sync manager for Rhythia maps. Download Ranked and Unranked maps in batches or sync your local library." />
+    <meta name="description" content="Rhythia DB - Client-side bulk downloader and library sync tool for Rhythia rhythm game beatmaps." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Rhythia DB</title>
+    <title>Rhythia DB - Ultimate Beatmap Downloader & Library Sync</title>
     <!-- Google Fonts: Outfit and Fira Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,17 +17,104 @@
   </head>
   <body>
     <div id="app">
+      <!-- App Header & Navigation -->
       <header class="app-header">
         <div class="header-content">
           <div class="logo">
             <i class="fa-solid fa-compact-disc disc-icon"></i>
             <h1>Rhythia<span>DB</span></h1>
+            <span class="badge badge-version">v2.0</span>
           </div>
-          <p class="tagline">Manage, download, and synchronize your Rhythia rhythm game music library 100% in your browser.</p>
+          <nav class="app-nav">
+            <button id="nav-btn-home" class="nav-btn active"><i class="fa-solid fa-house"></i> Home</button>
+            <button id="nav-btn-app" class="nav-btn"><i class="fa-solid fa-bolt"></i> Web App Downloader</button>
+            <a href="https://github.com/Varomine/Rhythia-DB-tool/releases/tag/RhythiaDB" target="_blank" class="nav-btn nav-btn-highlight"><i class="fa-solid fa-download"></i> Desktop App</a>
+          </nav>
         </div>
       </header>
 
-      <main class="app-container">
+      <!-- HERO LANDING PAGE SECTION -->
+      <section id="hero-section" class="hero-container">
+        <div class="hero-badge">
+          <i class="fa-solid fa-bolt-lightning icon-cyan"></i>
+          <span>ULTIMATE RHYTHIA MUSIC MANAGEMENT &amp; SYNC</span>
+        </div>
+
+        <h1 class="hero-title">
+          Download &amp; Synchronize Your Entire <span class="gradient-text">Rhythia Library</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Synchronize all 9,460+ beatmaps (~50 GB) directly inside your browser or desktop app—with zero server data storage, unlimited direct folder streaming, and deep library verification.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="https://github.com/Varomine/Rhythia-DB-tool/releases/tag/RhythiaDB" target="_blank" class="btn btn-hero btn-hero-cyan">
+            <i class="fa-solid fa-download"></i> Download Desktop App
+          </a>
+          <button id="btn-hero-continue" class="btn btn-hero btn-hero-glass">
+            <i class="fa-solid fa-globe"></i> Continue in Website
+          </button>
+        </div>
+
+        <!-- HERO STATS BANNER -->
+        <div class="hero-stats-banner">
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">9,460+</span>
+            <span class="hero-stat-label">Total Beatmaps</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">860</span>
+            <span class="hero-stat-label">Ranked Maps</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">0 MB</span>
+            <span class="hero-stat-label">Server Memory Limits</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">100%</span>
+            <span class="hero-stat-label">Client-Side Privacy</span>
+          </div>
+        </div>
+
+        <!-- FEATURE CARDS SHOWCASE GRID -->
+        <div class="hero-features-header">
+          <h2>⚡ What Can RhythiaDB Do?</h2>
+          <p>Built for maximum speed, privacy, and seamless music synchronization.</p>
+        </div>
+
+        <div class="hero-features-grid">
+          <div class="hero-feature-card">
+            <div class="feature-icon icon-pink"><i class="fa-solid fa-folder-open"></i></div>
+            <h3>Direct Folder Sync (Zero Memory Limits)</h3>
+            <p>Uses the modern browser File System Access API to stream map files directly into your local folder. Download Rhythia's entire 9,460+ map catalog without browser crashes!</p>
+          </div>
+
+          <div class="hero-feature-card">
+            <div class="feature-icon icon-cyan"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <h3>Flexible Batch Downloader</h3>
+            <p>Filter beatmaps by Ranked, Unranked, or Qualified categories and download in customizable batch sizes (50, 100, 200, 500 maps) or split ZIP archives.</p>
+          </div>
+
+          <div class="hero-feature-card">
+            <div class="feature-icon icon-green"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <h3>100% Private Library Checker</h3>
+            <p>Drag and drop your local songs folder or ZIP archive. RhythiaDB deeply inspects map IDs and hashes in memory to find missing maps and download them with 1 click.</p>
+          </div>
+
+          <div class="hero-feature-card">
+            <div class="feature-icon icon-purple"><i class="fa-solid fa-eye"></i></div>
+            <h3>RhythiaDB Desktop App (Python + Vision AI)</h3>
+            <p>Prefer a native desktop tool? Download <code>RhythiaDB.py</code> with multi-threaded downloads, auto-update checks, and real-time OpenCV circle tracking.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE WEB APP SECTION -->
+      <main id="web-app-section" class="app-container">
         <!-- Database Loader Status -->
         <section id="db-status-section" class="card db-status-card">
           <div class="db-status-content">
@@ -59,32 +146,33 @@
             </div>
           </div>
           <div class="card stat-card" id="stat-unranked">
-            <div class="stat-icon violet"><i class="fa-solid fa-globe"></i></div>
+            <div class="stat-icon yellow"><i class="fa-solid fa-layer-group"></i></div>
             <div class="stat-info">
               <span class="stat-label">Unranked Maps</span>
               <span class="stat-value" id="val-unranked">-</span>
             </div>
           </div>
           <div class="card stat-card" id="stat-qualified">
-            <div class="stat-icon yellow"><i class="fa-solid fa-star"></i></div>
+            <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
             <div class="stat-info">
-              <span class="stat-label">Qualified</span>
+              <span class="stat-label">Qualified Maps</span>
               <span class="stat-value" id="val-qualified">-</span>
             </div>
           </div>
         </section>
 
-        <div class="main-grid">
-          <!-- Left Column: Bulk Downloader -->
-          <div class="column-left">
+        <!-- Main Workspace (2 Columns) -->
+        <div class="grid-2col">
+          <!-- Left Column: Downloader -->
+          <div class="col">
             <section class="card downloader-card">
               <div class="card-header">
                 <h2><i class="fa-solid fa-cloud-arrow-down icon-cyan"></i> Bulk Downloader</h2>
-                <span class="badge badge-info">Client-side Zip</span>
+                <span class="badge badge-info">Client-side Sync</span>
               </div>
               <div class="card-body">
                 <p class="card-description">
-                  Due to browser memory limits, compiling all 9,000+ maps (~45GB) into a single ZIP file is not supported. Please use the batch downloader below.
+                  Due to browser memory limits, compiling all 9,000+ maps (~45GB) into a single ZIP file is not supported. Please use the batch downloader below or direct folder sync.
                 </p>
 
                 <!-- Filters & Controls -->
@@ -111,139 +199,145 @@
                   <div class="form-group half">
                     <label for="batch-select">Select Batch</label>
                     <select id="batch-select" class="form-control">
-                      <!-- Dynamically filled -->
-                      <option value="0">Loading...</option>
+                      <option value="0">Loading database...</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="batch-info-panel" id="batch-info-panel" style="display: none;">
-                  <span id="batch-range-text">Maps 1 to 100 of 846</span>
-                  <span class="bullet">•</span>
-                  <span id="batch-size-estimate">Est. Size: ~500 MB</span>
+                <div class="batch-info" id="batch-info-panel">
+                  <span id="batch-range-text">Maps 1-100</span>
+                  <span class="badge badge-outline" id="batch-size-estimate">Est. Size: ~500MB</span>
                 </div>
 
-                <!-- Downloader Actions -->
-                <div class="action-buttons">
+                <div class="action-row">
                   <button id="btn-download-batch" class="btn btn-primary" disabled>
-                    <i class="fa-solid fa-circle-down"></i> Download Selected Batch
+                    <i class="fa-solid fa-download"></i> Download Selected Batch
                   </button>
                   <button id="btn-download-all-maps" class="btn btn-secondary" disabled>
-                    <i class="fa-solid fa-download"></i> Download ALL Maps
+                    <i class="fa-solid fa-angles-down"></i> Download ALL Maps
                   </button>
                   <button id="btn-cancel-download" class="btn btn-danger" style="display: none;">
-                    <i class="fa-solid fa-circle-xmark"></i> Cancel
+                    <i class="fa-solid fa-xmark"></i> Cancel Download
                   </button>
                 </div>
 
-                <!-- Download Progress Tracking -->
-                <div class="download-progress-container" id="download-progress-container" style="display: none;">
-                  <div class="progress-details">
-                    <span class="progress-status" id="download-progress-status">Preparing downloads...</span>
-                    <span class="progress-percent" id="download-progress-percent">0%</span>
+                <!-- Download Progress & Console -->
+                <div id="download-progress-container" class="download-progress-box" style="display: none;">
+                  <div class="progress-info">
+                    <span id="download-progress-status">Downloading beatmaps...</span>
+                    <span id="download-progress-percent">0%</span>
                   </div>
                   <div class="progress-bar-container">
-                    <div class="progress-bar-fill progress-glow" id="download-progress-fill" style="width: 0%"></div>
+                    <div id="download-progress-fill" class="progress-bar-fill" style="width: 0%"></div>
                   </div>
                   <div class="download-stats">
                     <span id="download-stat-count">0 / 0 maps downloaded</span>
                     <span id="download-stat-speed">0.0 MB/s</span>
                   </div>
-                  <!-- Detailed console/log snippet -->
-                  <div class="log-console-header" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; margin-bottom: 0.25rem;">
-                    <span class="log-title" style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-terminal"></i> Activity Log (Hidden to prevent lag)</span>
-                    <button type="button" id="btn-toggle-log" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
-                      <i class="fa-solid fa-eye"></i> Show Logs
-                    </button>
+
+                  <div class="log-header">
+                    <span>Console Log</span>
+                    <button id="btn-toggle-log" class="btn-text"><i class="fa-solid fa-eye"></i> Show Logs</button>
                   </div>
-                  <div class="log-console" id="download-log" style="display: none;">
-                    <div class="log-line text-mute">Console initialized... Ready to download.</div>
-                  </div>
+                  <div id="download-log" class="download-log-box" style="display: none;"></div>
                 </div>
               </div>
             </section>
           </div>
 
-          <!-- Right Column: Sync & Upload Checker -->
-          <div class="column-right">
-            <section class="card upload-card">
+          <!-- Right Column: Library Sync -->
+          <div class="col">
+            <section class="card sync-card">
               <div class="card-header">
-                <h2><i class="fa-solid fa-folder-open icon-pink"></i> Library Checker (Sync)</h2>
-                <span class="badge badge-pink">100% Private</span>
+                <h2><i class="fa-solid fa-sync icon-pink"></i> Library Checker</h2>
+                <span class="badge badge-success">100% Private</span>
               </div>
               <div class="card-body">
                 <p class="card-description">
-                  Upload your existing map files, ZIPs, or folders. We will analyze them to determine which maps you are still missing from the database.
+                  Drag and drop your local Rhythia maps folder or ZIP file below to scan your collection against the global database.
                 </p>
 
-                <!-- Drag & Drop Zone -->
-                <div class="upload-dropzone disabled" id="dropzone">
-                  <input type="file" id="file-upload" accept=".zip,.sspm,.rhm,.ssmp" multiple class="file-input" disabled />
-                  <input type="file" id="folder-upload" webkitdirectory directory multiple class="file-input" style="display: none;" disabled />
-                  <i class="fa-solid fa-folder-open upload-icon"></i>
-                  <h3>Drag & Drop your maps, ZIPs, or folders here</h3>
-                  <p>or click to browse multiple map files / folders from your device</p>
-                  <div class="upload-mode-buttons" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; z-index: 10; position: relative;">
-                    <button type="button" id="btn-select-files" class="btn btn-secondary btn-sm" disabled><i class="fa-solid fa-file"></i> Select Files</button>
-                    <button type="button" id="btn-select-folder" class="btn btn-secondary btn-sm" disabled><i class="fa-solid fa-folder"></i> Select Folder</button>
-                  </div>
-                  <span class="upload-limit-warn" id="upload-status-text">Please wait for the Rhythia database to sync...</span>
-                </div>
-
-                <!-- ZIP Processing Status -->
-                <div id="zip-process-status" class="zip-process-card" style="display: none; flex-direction: column; gap: 0.75rem; align-items: stretch;">
-                  <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="spinner-small" id="zip-spinner"></div>
-                    <div class="zip-process-text">
-                      <h4 id="zip-process-title">Reading Directory...</h4>
-                      <p id="zip-process-desc">Initializing parser</p>
-                    </div>
-                  </div>
-                  <div class="progress-bar-container mini">
-                    <div class="progress-bar-fill" id="zip-progress" style="width: 0%"></div>
-                  </div>
-                </div>
-
-                <!-- Results Panel -->
-                <div class="sync-results-panel" id="sync-results" style="display: none;">
-                  <div class="sync-percentage-card">
-                    <div class="percentage-circle">
-                      <svg viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="40"></circle>
-                        <circle cx="50" cy="50" r="40" id="percent-ring" style="stroke-dasharray: 251; stroke-dashoffset: 251;"></circle>
-                      </svg>
-                      <div class="percent-number" id="sync-percent-text">0%</div>
-                    </div>
-                    <div class="sync-summary-stats">
-                      <h3>Sync Results</h3>
-                      <p><strong id="sync-owned-count">0</strong> maps owned</p>
-                      <p><strong id="sync-missing-count">0</strong> maps missing</p>
-                    </div>
-                  </div>
-
-                  <!-- Missing Maps list -->
-                  <div class="missing-maps-section card" id="missing-maps-section" style="display: none;">
-                    <div class="missing-header">
-                      <h3><i class="fa-solid fa-list-check icon-pink"></i> Missing Maps (<span id="missing-list-count">0</span>)</h3>
-                      <button id="btn-download-missing-all" class="btn btn-secondary btn-sm">
-                        <i class="fa-solid fa-cloud-arrow-down"></i> Download All Missing
+                <!-- File Dropzone -->
+                <div id="dropzone" class="dropzone disabled">
+                  <div class="dropzone-content">
+                    <i class="fa-solid fa-file-zipper dropzone-icon"></i>
+                    <h3>Drag &amp; Drop Maps ZIP / Folder Here</h3>
+                    <p>or select manually using the buttons below</p>
+                    
+                    <div class="file-select-group">
+                      <button id="btn-select-files" class="btn btn-sm btn-secondary" disabled>
+                        <i class="fa-solid fa-file"></i> Choose Maps Archive (.zip)
+                      </button>
+                      <button id="btn-select-folder" class="btn btn-sm btn-secondary" disabled>
+                        <i class="fa-solid fa-folder-open"></i> Choose Local Maps Folder
                       </button>
                     </div>
 
-                    <div class="missing-list-container">
-                      <table class="missing-table">
-                        <thead>
-                          <tr>
-                            <th>Map Details</th>
-                            <th>Difficulty</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody id="missing-table-body">
-                          <!-- Filled dynamically -->
-                        </tbody>
-                      </table>
+                    <input type="file" id="file-upload" accept=".zip" style="display: none;" disabled />
+                    <input type="file" id="folder-upload" webkitdirectory directory multiple style="display: none;" disabled />
+                  </div>
+                </div>
+
+                <p id="upload-status-text" class="upload-note">
+                  Note: Syncing database... Please wait until Rhythia Database is loaded.
+                </p>
+
+                <!-- Processing Indicator -->
+                <div id="zip-process-status" class="sync-status-box" style="display: none;">
+                  <div class="spinner"></div>
+                  <div class="sync-status-text">
+                    <h4 id="zip-process-title">Inspecting Local Library...</h4>
+                    <p id="zip-process-desc">Parsing map files and checking IDs...</p>
+                    <div class="progress-bar-container mini" style="margin-top: 8px;">
+                      <div id="zip-progress" class="progress-bar-fill" style="width: 0%;"></div>
                     </div>
+                  </div>
+                </div>
+
+                <!-- Sync Results Panel -->
+                <div id="sync-results" class="sync-results-box" style="display: none;">
+                  <div class="sync-summary">
+                    <div class="sync-chart">
+                      <svg viewBox="0 0 100 100" class="percent-circle">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#27272a" stroke-width="3" />
+                        <path id="percent-ring" class="circle-fill" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="100, 100" stroke-dashoffset="100" />
+                      </svg>
+                      <span id="sync-percent-text" class="percent-text">0%</span>
+                    </div>
+
+                    <div class="sync-metrics">
+                      <div class="metric-row">
+                        <span class="metric-label"><i class="fa-solid fa-circle-check text-success"></i> Owned Maps:</span>
+                        <span id="sync-owned-count" class="metric-value">0</span>
+                      </div>
+                      <div class="metric-row">
+                        <span class="metric-label"><i class="fa-solid fa-circle-xmark text-danger"></i> Missing Maps:</span>
+                        <span id="sync-missing-count" class="metric-value">0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Missing Maps Table & Action -->
+                <div id="missing-maps-section" class="missing-section" style="display: none;">
+                  <div class="missing-header">
+                    <h3>Missing Beatmaps (<span id="missing-list-count">0</span>)</h3>
+                    <button id="btn-download-missing-all" class="btn btn-sm btn-primary">
+                      <i class="fa-solid fa-cloud-arrow-down"></i> Download All Missing
+                    </button>
+                  </div>
+                  
+                  <div class="table-container">
+                    <table class="missing-table">
+                      <thead>
+                        <tr>
+                          <th>Beatmap Title</th>
+                          <th>Difficulty</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="missing-table-body"></tbody>
+                    </table>
                   </div>
                 </div>
 
@@ -253,32 +347,27 @@
         </div>
       </main>
 
-      <footer class="app-footer">
-        <p>Built with <i class="fa-solid fa-heart icon-pink animate-pulse"></i> for Rhythia players.</p>
-        <p class="text-mute font-mono text-xs">All map assets and metadata are fetched directly from production.rhythia.com & static.rhythia.com. We do not host or store any files.</p>
-      </footer>
-    </div>
-
-    <!-- Custom Modal Dialog -->
-    <div id="custom-modal" class="modal-overlay" style="display: none;">
-      <div class="modal-card">
-        <div class="modal-header">
-          <h3 id="modal-title">Notification</h3>
-          <button id="modal-close-btn" class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p id="modal-message"></p>
-        </div>
-        <div class="modal-footer" id="modal-footer">
-          <button id="modal-cancel-btn" class="btn btn-secondary btn-sm">Cancel</button>
-          <button id="modal-confirm-btn" class="btn btn-primary btn-sm">OK</button>
+      <!-- Custom Dark Mode Modal Dialog -->
+      <div id="custom-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3 id="modal-title">Notification</h3>
+            <button id="modal-close-btn" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="modal-body">
+            <p id="modal-message">Modal Message</p>
+          </div>
+          <div class="modal-footer" id="modal-footer">
+            <button id="modal-cancel-btn" class="btn btn-secondary btn-sm">Cancel</button>
+            <button id="modal-confirm-btn" class="btn btn-primary btn-sm">OK</button>
+          </div>
         </div>
       </div>
+
+      <!-- Toast Notification Container -->
+      <div id="toast-container" class="toast-container"></div>
     </div>
-
-    <!-- Toast Notifications Container -->
-    <div id="toast-container" class="toast-container"></div>
-
+    
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
