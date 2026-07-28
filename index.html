@@ -58,6 +58,13 @@
               <span class="stat-value" id="val-ranked">-</span>
             </div>
           </div>
+          <div class="card stat-card" id="stat-approved">
+            <div class="stat-icon purple" style="color: #a855f7;"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">Approved Maps</span>
+              <span class="stat-value" id="val-approved" style="color: #a855f7;">-</span>
+            </div>
+          </div>
           <div class="card stat-card" id="stat-unranked">
             <div class="stat-icon violet"><i class="fa-solid fa-globe"></i></div>
             <div class="stat-info">
@@ -91,10 +98,12 @@
                 <div class="form-group">
                   <label for="filter-status">Map Types</label>
                   <select id="filter-status" class="form-control">
+                    <option value="RANKED_APPROVED">Ranked & Approved (Recommended)</option>
                     <option value="RANKED">Ranked Only</option>
+                    <option value="APPROVED">Approved Only</option>
                     <option value="UNRANKED">Unranked Only</option>
                     <option value="QUALIFIED">Qualified Only</option>
-                    <option value="ALL">All Maps (Ranked + Unranked + Qualified)</option>
+                    <option value="ALL">All Maps (Ranked + Approved + Unranked + Qualified)</option>
                   </select>
                 </div>
 

@@ -22,6 +22,7 @@ const dbStatusSection = document.getElementById('db-status-section');
 
 const valTotal = document.getElementById('val-total');
 const valRanked = document.getElementById('val-ranked');
+const valApproved = document.getElementById('val-approved');
 const valUnranked = document.getElementById('val-unranked');
 const valQualified = document.getElementById('val-qualified');
 
@@ -338,11 +339,13 @@ async function fetchRhythiaDatabase() {
     // Update Stats Cards from 100% loaded maps
     const totalCount = allMaps.length;
     const rankedCount = allMaps.filter(m => m.status === 'RANKED').length;
-    const qualifiedCount = allMaps.filter(m => m.status === 'QUALIFIED').length;
-    const unrankedCount = totalCount - rankedCount - qualifiedCount; // Includes all community & unranked maps
+    const approvedCount = allMaps.filter(m => m.status === 'APPROVED').length;
+    const qualifiedCount = allMaps.filter(m => m.status === 'QUALIFIED' || m.qualified === true).length;
+    const unrankedCount = totalCount - rankedCount - approvedCount - qualifiedCount;
     
     valTotal.textContent = totalCount.toLocaleString();
     valRanked.textContent = rankedCount.toLocaleString();
+    if (valApproved) valApproved.textContent = approvedCount.toLocaleString();
     valUnranked.textContent = unrankedCount.toLocaleString();
     valQualified.textContent = qualifiedCount.toLocaleString();
     
@@ -391,8 +394,12 @@ function applyFilters() {
   const status = filterStatus.value;
   if (status === 'ALL') {
     filteredMaps = [...allMaps];
+  } else if (status === 'RANKED_APPROVED') {
+    filteredMaps = allMaps.filter(m => m.status === 'RANKED' || m.status === 'APPROVED');
+  } else if (status === 'APPROVED') {
+    filteredMaps = allMaps.filter(m => m.status === 'APPROVED');
   } else if (status === 'UNRANKED') {
-    filteredMaps = allMaps.filter(m => m.status !== 'RANKED' && m.status !== 'QUALIFIED');
+    filteredMaps = allMaps.filter(m => m.status === 'UNRANKED' || (m.status !== 'RANKED' && m.status !== 'APPROVED' && m.status !== 'QUALIFIED'));
   } else {
     filteredMaps = allMaps.filter(m => m.status === status);
   }
