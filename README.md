@@ -2,7 +2,7 @@
 
 **Rhythia DB** (Bulk Downloader) is a fast, 100% client-side web tool designed for Rhythia rhythm game players to download and synchronize their entire song library directly in the browser—with zero server data storage.
 
-![Rhythia DB Interface](https://i.ibb.co/qLDZzDZ9/Screenshot-2026-07-24-211154.png)
+![Rhythia DB Interface](https://i.ibb.co/9kXNFg1Q/Screenshot-2026-07-28-141313.png)
 
 ## 🌟 Key Features
 
